@@ -139,12 +139,12 @@ function ProductCatalogPage() {
             Back to home
           </Link>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-600">Browse products</p>
+            <p className="text-xs font-bold uppercase tracking-[0.3em] text-indigo-600">Multi-Category Catalog</p>
             <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              Fresh groceries with search, filter, sort, and pagination.
+              Mobiles, Electronics, Cold Drinks, Groceries & Essentials
             </h1>
             <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-              This catalog is wired to the backend product API, so the same controls will work later when we add admin product management and image uploads.
+              Browse products across Electronics, Mobiles, Chilled Beverages, Snacks, Groceries, Personal Care, and Home Essentials.
             </p>
           </div>
         </div>
@@ -159,12 +159,12 @@ function ProductCatalogPage() {
         onSubmit={handleSubmit(applyFilters)}
       >
         <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-50 text-brand-700">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-700">
             <FaFilter />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-slate-950">Filter catalog</h2>
-            <p className="text-sm text-slate-500">Use these controls to narrow the grocery inventory.</p>
+            <h2 className="text-lg font-bold text-slate-950">Filter superstore catalog</h2>
+            <p className="text-sm text-slate-500">Use these controls to filter products across all categories.</p>
           </div>
         </div>
 
@@ -175,7 +175,7 @@ function ProductCatalogPage() {
               <FaMagnifyingGlass className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                placeholder="Rice, milk, snacks..."
+                placeholder="Earbuds, Cola, Chips, Phone..."
                 className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-slate-900 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
                 {...register('search')}
               />
@@ -183,12 +183,20 @@ function ProductCatalogPage() {
           </label>
           <label className="block space-y-2">
             <span className="text-sm font-semibold text-slate-700">Category</span>
-            <input
-              type="text"
-              placeholder="Fruits, Dairy, Snacks"
+            <select
               className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
               {...register('category')}
-            />
+            >
+              <option value="">All Categories</option>
+              <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+              <option value="Mobiles & Accessories">Mobiles & Accessories</option>
+              <option value="Cold Drinks & Juices">Cold Drinks & Juices</option>
+              <option value="Snacks & Munchies">Snacks & Munchies</option>
+              <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+              <option value="Dairy & Eggs">Dairy & Eggs</option>
+              <option value="Personal Care & Beauty">Personal Care & Beauty</option>
+              <option value="Home & Kitchen">Home & Kitchen</option>
+            </select>
           </label>
           <label className="block space-y-2">
             <span className="text-sm font-semibold text-slate-700">Brand</span>

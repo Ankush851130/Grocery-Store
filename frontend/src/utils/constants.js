@@ -1,4 +1,4 @@
-export const APP_NAME = import.meta.env.VITE_APP_NAME || 'Grocery E-Commerce';
+export const APP_NAME = import.meta.env.VITE_APP_NAME || 'QuickKart Superstore';
 export const DEFAULT_PAGE_SIZE = 12;
 export const LOCAL_STORAGE_KEYS = {
   cart: 'grocery_cart_items',

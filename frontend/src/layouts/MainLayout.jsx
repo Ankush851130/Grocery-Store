@@ -48,11 +48,11 @@ function MainLayout() {
   return (
     <div className="min-h-screen bg-transparent text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <header className="sticky top-0 z-30 border-b border-white/60 dark:border-slate-800/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl transition-colors duration-300">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-[1536px] items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
           <Link to="/" onClick={closeMobileMenu} className="flex flex-col">
-            <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-brand-600">Grocery</p>
+            <p className="text-[11px] font-black uppercase tracking-[0.25em] text-amber-500 flex items-center gap-1">⚡ 10-Min Delivery</p>
             <h1 className="text-lg font-black tracking-tight text-slate-950 dark:text-white sm:text-xl">
-              E-Commerce Platform
+              QuickKart Superstore
             </h1>
           </Link>
 
@@ -228,7 +228,7 @@ function MainLayout() {
         ) : null}
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-[1536px] px-4 py-6 sm:px-6 lg:px-8">
         <Outlet />
       </main>
     </div>
