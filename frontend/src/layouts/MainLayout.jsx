@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import {
   FaBagShopping,
   FaBars,
+  FaBolt,
   FaBoxesStacked,
   FaClipboardList,
   FaHouse,
@@ -49,11 +50,24 @@ function MainLayout() {
     <div className="min-h-screen bg-transparent text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <header className="sticky top-0 z-30 border-b border-white/60 dark:border-slate-800/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl transition-colors duration-300">
         <div className="mx-auto flex w-full max-w-[1536px] items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
-          <Link to="/" onClick={closeMobileMenu} className="flex flex-col">
-            <p className="text-[11px] font-black uppercase tracking-[0.25em] text-amber-500 flex items-center gap-1">⚡ 10-Min Delivery</p>
-            <h1 className="text-lg font-black tracking-tight text-slate-950 dark:text-white sm:text-xl">
-              QuickKart Superstore
-            </h1>
+          <Link to="/" onClick={closeMobileMenu} className="group flex items-center gap-3">
+            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-indigo-600 text-slate-950 shadow-md shadow-amber-500/20 transition duration-300 group-hover:scale-105 group-hover:shadow-amber-500/40">
+              <FaBolt className="text-xl text-slate-950 animate-pulse" />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5">
+                <span className="text-lg font-black tracking-tight bg-gradient-to-r from-slate-950 via-slate-800 to-indigo-950 dark:from-white dark:via-slate-100 dark:to-amber-300 bg-clip-text text-transparent sm:text-xl">
+                  QuickKart
+                </span>
+                <span className="rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-slate-950 shadow-sm">
+                  Superstore
+                </span>
+              </div>
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+                10-Minute Express Delivery
+              </p>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

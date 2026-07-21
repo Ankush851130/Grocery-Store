@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ThemeProvider } from './context/ThemeContext';
 import './index.css';
 
-// Add global error handler for debugging
 window.addEventListener('error', (event) => {
   console.error('Global error:', event.error);
 });
@@ -23,18 +23,20 @@ try {
   }
 
   const root = ReactDOM.createRoot(rootElement);
-  
+
   root.render(
     <React.StrictMode>
-      <ThemeProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <CartProvider>
-              <App />
-            </CartProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </ThemeProvider>
+      <ErrorBoundary>
+        <ThemeProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <CartProvider>
+                <App />
+              </CartProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </ThemeProvider>
+      </ErrorBoundary>
     </React.StrictMode>,
   );
 } catch (error) {
@@ -45,4 +47,3 @@ try {
     <p>${error.stack}</p>
   </div>`;
 }
-

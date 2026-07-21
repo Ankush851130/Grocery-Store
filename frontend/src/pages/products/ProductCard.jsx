@@ -9,8 +9,9 @@ const currencyFormatter = new Intl.NumberFormat('en-IN', {
 });
 
 function ProductCard({ product }) {
+  if (!product) return null;
   const { addItem } = useCart();
-  const hasDiscount = typeof product.discountPrice === 'number' && product.discountPrice < product.price;
+  const hasDiscount = typeof product?.discountPrice === 'number' && product.discountPrice < product.price;
   const displayPrice = hasDiscount ? product.discountPrice : product.price;
   const imageUrl = product.images?.[0];
 

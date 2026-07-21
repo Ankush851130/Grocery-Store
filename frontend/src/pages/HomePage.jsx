@@ -180,20 +180,20 @@ function HomePage() {
 
         <div className="relative z-10 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-500/10 px-4 py-2 text-xs font-black uppercase tracking-widest text-amber-300 backdrop-blur-md animate-pulse">
-              <FaBolt className="text-amber-400 text-sm" />
-              <span>⚡ 10-Minute Instant Delivery Platform</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-indigo-500/20 px-4 py-2 text-xs font-black uppercase tracking-widest text-amber-300 backdrop-blur-md">
+              <FaBolt className="text-amber-400 text-sm animate-bounce" />
+              <span>⚡ QuickKart Superstore • 10-Minute Express</span>
             </div>
 
             <div className="space-y-4">
               <h1 className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15]">
-                Electronics, Mobiles, Groceries & Cold Drinks Delivered in{' '}
+                Mobiles, Electronics, Cold Drinks & Groceries in{' '}
                 <span className="bg-gradient-to-r from-amber-400 via-emerald-300 to-cyan-400 bg-clip-text text-transparent">
-                  10 Mins.
+                  10 Minutes.
                 </span>
               </h1>
               <p className="max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
-                Your one-stop superstore like Zepto & Flipkart. Shop smartphones, wireless earbuds, chilled drinks, crunchy snacks, fresh groceries & daily essentials at unbeatable prices.
+                Your instant multi-category superstore. Get smartphones, wireless audio, ice-chilled beverages, munchies, organic produce & daily household needs delivered superfast.
               </p>
             </div>
 
@@ -432,8 +432,8 @@ function HomePage() {
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product._id} product={product} />
+            {featuredProducts.map((product, idx) => (
+              <ProductCard key={product?._id || idx} product={product} />
             ))}
           </div>
         )}

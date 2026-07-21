@@ -197,6 +197,9 @@ function AdminProductsPage() {
     setMessage('Product deleted successfully.');
   };
 
+  const inputStyle =
+    'w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/40';
+
   return (
     <AdminSectionShell
       title="Manage products"
@@ -206,7 +209,7 @@ function AdminProductsPage() {
           <button
             type="button"
             onClick={() => setIsCreateOpen(true)}
-            className="inline-flex items-center gap-2 rounded-2xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-brand-700"
+            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-soft transition hover:brightness-110"
           >
             <FaPlus />
             Add Product
@@ -214,7 +217,7 @@ function AdminProductsPage() {
           <button
             type="button"
             onClick={handleReset}
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-brand-200 hover:text-brand-700"
+            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400"
           >
             <FaRotateRight />
             Reset
@@ -224,24 +227,24 @@ function AdminProductsPage() {
     >
       {/* Create Product Modal */}
       {isCreateOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] bg-white p-6 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-2xl text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
               <div>
-                <h3 className="text-xl font-bold text-slate-950">Add New Product</h3>
-                <p className="text-sm text-slate-500">Fill in the product details to add it to the catalog.</p>
+                <h3 className="text-xl font-bold text-slate-950 dark:text-white">Add New Product</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Fill in the product details to add it to the catalog.</p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsCreateOpen(false)}
-                className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                className="rounded-full p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200"
               >
                 <FaXmark className="text-lg" />
               </button>
             </div>
 
             {createError ? (
-              <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
+              <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 dark:bg-red-950/40 p-4 text-sm font-semibold text-red-600 dark:text-red-400">
                 {createError}
               </div>
             ) : null}
@@ -249,99 +252,106 @@ function AdminProductsPage() {
             <form onSubmit={handleSubmitCreate(handleCreateProduct)} className="mt-4 space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Product Name *</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Product Name *</span>
                   <input
                     type="text"
-                    placeholder="e.g. Organic Strawberries"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    placeholder="e.g. SonicBass Wireless Earbuds"
+                    className={inputStyle}
                     {...registerCreate('name', { required: 'Name is required' })}
                   />
                   {createErrors.name ? <p className="text-xs text-red-500">{createErrors.name.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Brand *</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Brand *</span>
                   <input
                     type="text"
-                    placeholder="e.g. Fresh Farm"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    placeholder="e.g. SonicAudio"
+                    className={inputStyle}
                     {...registerCreate('brand', { required: 'Brand is required' })}
                   />
                   {createErrors.brand ? <p className="text-xs text-red-500">{createErrors.brand.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Category *</span>
-                  <input
-                    type="text"
-                    placeholder="e.g. Fruits & Vegetables"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
-                    {...registerCreate('category', { required: 'Category is required' })}
-                  />
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Category *</span>
+                  <select className={inputStyle} {...registerCreate('category', { required: 'Category is required' })}>
+                    <option value="">Select Category</option>
+                    <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+                    <option value="Mobiles & Accessories">Mobiles & Accessories</option>
+                    <option value="Cold Drinks & Juices">Cold Drinks & Juices</option>
+                    <option value="Snacks & Munchies">Snacks & Munchies</option>
+                    <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                    <option value="Dairy & Eggs">Dairy & Eggs</option>
+                    <option value="Personal Care & Beauty">Personal Care & Beauty</option>
+                    <option value="Home & Kitchen">Home & Kitchen</option>
+                    <option value="Bakery">Bakery & Quick Meals</option>
+                    <option value="Pantry & Oil">Pantry & Oils</option>
+                  </select>
                   {createErrors.category ? <p className="text-xs text-red-500">{createErrors.category.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Unit</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Unit</span>
                   <input
                     type="text"
-                    placeholder="e.g. 500g, 1 kg, Pack of 6"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    placeholder="e.g. 1 Unit, Pack of 6"
+                    className={inputStyle}
                     {...registerCreate('unit')}
                   />
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Regular Price ($) *</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Regular Price (₹) *</span>
                   <input
                     type="number"
-                    step="0.01"
-                    placeholder="e.g. 4.99"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    step="1"
+                    placeholder="e.g. 3499"
+                    className={inputStyle}
                     {...registerCreate('price', { required: 'Price is required' })}
                   />
                   {createErrors.price ? <p className="text-xs text-red-500">{createErrors.price.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Discount Price ($)</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Discount Price (₹)</span>
                   <input
                     type="number"
-                    step="0.01"
-                    placeholder="e.g. 3.99 (Optional)"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    step="1"
+                    placeholder="e.g. 2499 (Optional)"
+                    className={inputStyle}
                     {...registerCreate('discountPrice')}
                   />
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Stock Quantity *</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Stock Quantity *</span>
                   <input
                     type="number"
                     placeholder="e.g. 50"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    className={inputStyle}
                     {...registerCreate('stock', { required: 'Stock is required' })}
                   />
                   {createErrors.stock ? <p className="text-xs text-red-500">{createErrors.stock.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Image URL</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Image URL</span>
                   <input
                     type="url"
                     placeholder="https://images.unsplash.com/..."
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    className={inputStyle}
                     {...registerCreate('imageUrl')}
                   />
                 </label>
               </div>
 
               <label className="block space-y-1">
-                <span className="text-sm font-semibold text-slate-700">Description *</span>
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Description *</span>
                 <textarea
                   rows="3"
                   placeholder="Detailed description of the product (minimum 20 characters)..."
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                  className={inputStyle}
                   {...registerCreate('description', {
                     required: 'Description is required',
                     minLength: { value: 20, message: 'Description must be at least 20 characters' },
@@ -351,37 +361,37 @@ function AdminProductsPage() {
               </label>
 
               <div className="flex items-center gap-6 pt-2">
-                <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700">
+                <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
                   <input
                     type="checkbox"
-                    className="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                    className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
                     {...registerCreate('isPublished')}
                   />
                   Publish Item Immediately
                 </label>
 
-                <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700">
+                <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
                   <input
                     type="checkbox"
-                    className="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                    className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
                     {...registerCreate('isFeatured')}
                   />
                   Feature on Homepage
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsCreateOpen(false)}
-                  className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                  className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isCreating}
-                  className="rounded-2xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-700 disabled:opacity-70"
+                  className="rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-indigo-700 disabled:opacity-70"
                 >
                   {isCreating ? 'Saving...' : 'Save & Publish Product'}
                 </button>
@@ -393,24 +403,24 @@ function AdminProductsPage() {
 
       {/* Edit Product Modal */}
       {editingProduct ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] bg-white p-6 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-2xl text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
               <div>
-                <h3 className="text-xl font-bold text-slate-950">Edit Product: {editingProduct.name}</h3>
-                <p className="text-sm text-slate-500">Update pricing, stock levels, or product details.</p>
+                <h3 className="text-xl font-bold text-slate-950 dark:text-white">Edit Product: {editingProduct.name}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Update pricing, stock levels, or product details.</p>
               </div>
               <button
                 type="button"
                 onClick={() => setEditingProduct(null)}
-                className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                className="rounded-full p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200"
               >
                 <FaXmark className="text-lg" />
               </button>
             </div>
 
             {editError ? (
-              <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
+              <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 dark:bg-red-950/40 p-4 text-sm font-semibold text-red-600 dark:text-red-400">
                 {editError}
               </div>
             ) : null}
@@ -418,91 +428,99 @@ function AdminProductsPage() {
             <form onSubmit={handleSubmitEdit(handleUpdateProduct)} className="mt-4 space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Product Name *</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Product Name *</span>
                   <input
                     type="text"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    className={inputStyle}
                     {...registerEdit('name', { required: 'Name is required' })}
                   />
                   {editErrors.name ? <p className="text-xs text-red-500">{editErrors.name.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Brand *</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Brand *</span>
                   <input
                     type="text"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    className={inputStyle}
                     {...registerEdit('brand', { required: 'Brand is required' })}
                   />
                   {editErrors.brand ? <p className="text-xs text-red-500">{editErrors.brand.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Category *</span>
-                  <input
-                    type="text"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
-                    {...registerEdit('category', { required: 'Category is required' })}
-                  />
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Category *</span>
+                  <select className={inputStyle} {...registerEdit('category', { required: 'Category is required' })}>
+                    <option value="">Select Category</option>
+                    <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+                    <option value="Mobiles & Accessories">Mobiles & Accessories</option>
+                    <option value="Cold Drinks & Juices">Cold Drinks & Juices</option>
+                    <option value="Snacks & Munchies">Snacks & Munchies</option>
+                    <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                    <option value="Dairy & Eggs">Dairy & Eggs</option>
+                    <option value="Personal Care & Beauty">Personal Care & Beauty</option>
+                    <option value="Home & Kitchen">Home & Kitchen</option>
+                    <option value="Bakery">Bakery & Quick Meals</option>
+                    <option value="Pantry & Oil">Pantry & Oils</option>
+                  </select>
                   {editErrors.category ? <p className="text-xs text-red-500">{editErrors.category.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Unit</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Unit</span>
                   <input
                     type="text"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    className={inputStyle}
                     {...registerEdit('unit')}
                   />
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Regular Price ($) *</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Regular Price (₹) *</span>
                   <input
                     type="number"
-                    step="0.01"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    step="1"
+                    className={inputStyle}
                     {...registerEdit('price', { required: 'Price is required' })}
                   />
                   {editErrors.price ? <p className="text-xs text-red-500">{editErrors.price.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Discount Price ($)</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Discount Price (₹)</span>
                   <input
                     type="number"
-                    step="0.01"
+                    step="1"
                     placeholder="Leave empty for no discount"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    className={inputStyle}
                     {...registerEdit('discountPrice')}
                   />
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Stock Quantity *</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Stock Quantity *</span>
                   <input
                     type="number"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    className={inputStyle}
                     {...registerEdit('stock', { required: 'Stock is required' })}
                   />
                   {editErrors.stock ? <p className="text-xs text-red-500">{editErrors.stock.message}</p> : null}
                 </label>
 
                 <label className="block space-y-1">
-                  <span className="text-sm font-semibold text-slate-700">Image URL</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Image URL</span>
                   <input
                     type="url"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                    className={inputStyle}
                     {...registerEdit('imageUrl')}
                   />
                 </label>
               </div>
 
               <label className="block space-y-1">
-                <span className="text-sm font-semibold text-slate-700">Description *</span>
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Description *</span>
                 <textarea
                   rows="3"
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-brand-500"
+                  className={inputStyle}
                   {...registerEdit('description', {
                     required: 'Description is required',
                     minLength: { value: 20, message: 'Description must be at least 20 characters' },
@@ -512,37 +530,37 @@ function AdminProductsPage() {
               </label>
 
               <div className="flex items-center gap-6 pt-2">
-                <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700">
+                <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
                   <input
                     type="checkbox"
-                    className="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                    className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
                     {...registerEdit('isPublished')}
                   />
                   Published
                 </label>
 
-                <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700">
+                <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
                   <input
                     type="checkbox"
-                    className="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                    className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
                     {...registerEdit('isFeatured')}
                   />
                   Featured on Homepage
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setEditingProduct(null)}
-                  className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                  className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isEditing}
-                  className="rounded-2xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-700 disabled:opacity-70"
+                  className="rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-indigo-700 disabled:opacity-70"
                 >
                   {isEditing ? 'Updating...' : 'Update Product Details'}
                 </button>
@@ -555,36 +573,36 @@ function AdminProductsPage() {
       {/* Filter Form */}
       <form className="grid gap-4 md:grid-cols-2 xl:grid-cols-5" onSubmit={handleSubmit(onSubmitFilter)}>
         <label className="block space-y-2 xl:col-span-2">
-          <span className="text-sm font-semibold text-slate-700">Search</span>
+          <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Search</span>
           <div className="relative">
-            <FaMagnifyingGlass className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            <FaMagnifyingGlass className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
             <input
               type="text"
               placeholder="Name, description, brand"
-              className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-slate-900 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
+              className={inputStyle}
               {...register('search')}
             />
           </div>
         </label>
         <label className="block space-y-2">
-          <span className="text-sm font-semibold text-slate-700">Category</span>
-          <input className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3" {...register('category')} />
+          <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Category</span>
+          <input className={inputStyle} {...register('category')} />
         </label>
         <label className="block space-y-2">
-          <span className="text-sm font-semibold text-slate-700">Brand</span>
-          <input className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3" {...register('brand')} />
+          <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Brand</span>
+          <input className={inputStyle} {...register('brand')} />
         </label>
         <label className="block space-y-2">
-          <span className="text-sm font-semibold text-slate-700">Featured</span>
-          <select className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3" {...register('isFeatured')}>
+          <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Featured</span>
+          <select className={inputStyle} {...register('isFeatured')}>
             <option value="">All</option>
             <option value="true">Featured</option>
             <option value="false">Not featured</option>
           </select>
         </label>
         <label className="block space-y-2">
-          <span className="text-sm font-semibold text-slate-700">Published</span>
-          <select className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3" {...register('isPublished')}>
+          <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Published</span>
+          <select className={inputStyle} {...register('isPublished')}>
             <option value="">All</option>
             <option value="true">Published</option>
             <option value="false">Draft</option>
@@ -592,18 +610,18 @@ function AdminProductsPage() {
         </label>
         <button
           type="submit"
-          className="rounded-2xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-brand-700 xl:self-end"
+          className="rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-indigo-700 xl:self-end"
         >
           Filter products
         </button>
       </form>
 
-      {message ? <div className="mt-4 rounded-2xl bg-brand-50 px-4 py-3 text-sm text-brand-800">{message}</div> : null}
+      {message ? <div className="mt-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 p-4 text-sm font-semibold text-indigo-700 dark:text-indigo-300">{message}</div> : null}
 
-      <div className="mt-5 overflow-hidden rounded-[1.5rem] border border-slate-200">
+      <div className="mt-5 overflow-hidden rounded-[1.5rem] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
-            <thead className="bg-slate-50 text-slate-600">
+          <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800 text-left text-sm">
+            <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300">
               <tr>
                 <th className="px-4 py-3">Product</th>
                 <th className="px-4 py-3">Price</th>
@@ -612,27 +630,27 @@ function AdminProductsPage() {
                 <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 bg-white">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
               {products.map((product) => (
                 <tr key={product._id}>
                   <td className="px-4 py-4">
-                    <p className="font-semibold text-slate-950">{product.name}</p>
-                    <p className="text-slate-500">{product.brand} · {product.category}</p>
+                    <p className="font-semibold text-slate-950 dark:text-white">{product.name}</p>
+                    <p className="text-slate-500 dark:text-slate-400">{product.brand} · {product.category}</p>
                   </td>
-                  <td className="px-4 py-4 text-slate-600">{formatCurrency(product.discountPrice || product.price)}</td>
+                  <td className="px-4 py-4 text-slate-600 dark:text-slate-300">{formatCurrency(product.discountPrice || product.price)}</td>
                   <td className="px-4 py-4 space-y-2">
                     <AdminBadge tone={product.isPublished ? 'success' : 'warning'}>
                       {product.isPublished ? 'Published' : 'Draft'}
                     </AdminBadge>
                     {product.isFeatured ? <AdminBadge tone="brand">Featured</AdminBadge> : null}
                   </td>
-                  <td className="px-4 py-4 text-slate-600">{product.stock}</td>
+                  <td className="px-4 py-4 text-slate-600 dark:text-slate-300">{product.stock}</td>
                   <td className="px-4 py-4">
                     <div className="flex flex-wrap gap-2">
                       <button
                         type="button"
                         onClick={() => handleStartEdit(product)}
-                        className="inline-flex items-center gap-2 rounded-2xl border border-brand-200 bg-brand-50 px-4 py-2 text-xs font-semibold text-brand-700 transition hover:bg-brand-100"
+                        className="inline-flex items-center gap-2 rounded-2xl border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40 px-4 py-2 text-xs font-semibold text-indigo-700 dark:text-indigo-300 transition hover:bg-indigo-100"
                       >
                         <FaPenToSquare />
                         Edit Details
@@ -640,21 +658,21 @@ function AdminProductsPage() {
                       <button
                         type="button"
                         onClick={() => handleTogglePublish(product)}
-                        className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-brand-200 hover:text-brand-700"
+                        className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 transition hover:border-indigo-400"
                       >
                         {product.isPublished ? 'Unpublish' : 'Publish'}
                       </button>
                       <button
                         type="button"
                         onClick={() => handleToggleFeatured(product)}
-                        className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-brand-200 hover:text-brand-700"
+                        className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 transition hover:border-indigo-400"
                       >
                         {product.isFeatured ? 'Unfeature' : 'Feature'}
                       </button>
                       <button
                         type="button"
                         onClick={() => handleDeleteProduct(product)}
-                        className="inline-flex items-center gap-2 rounded-2xl border border-red-200 bg-red-50 px-4 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-100"
+                        className="inline-flex items-center gap-2 rounded-2xl border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/40 px-4 py-2 text-xs font-semibold text-red-700 dark:text-red-300 transition hover:bg-red-100 dark:hover:bg-red-900/60"
                       >
                         <FaTrashCan />
                         Delete
@@ -665,7 +683,7 @@ function AdminProductsPage() {
               ))}
               {!isLoading && !products.length ? (
                 <tr>
-                  <td colSpan="5" className="px-4 py-8 text-center text-slate-500">
+                  <td colSpan="5" className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">
                     No products found.
                   </td>
                 </tr>
@@ -675,7 +693,7 @@ function AdminProductsPage() {
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between text-sm text-slate-500">
+      <div className="mt-4 flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">
         <span>
           Page {pagination.page} of {pagination.totalPages}
         </span>
