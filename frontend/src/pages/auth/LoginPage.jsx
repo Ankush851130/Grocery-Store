@@ -55,28 +55,28 @@ function LoginPage() {
       footer={
         <>
           New to QuickKart?{' '}
-          <Link to="/register" className="font-extrabold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <Link to="/register" className="font-black text-indigo-600 dark:text-indigo-400 hover:underline">
             Create an account
           </Link>
         </>
       }
     >
-      <div className="rounded-[2rem] border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-xl">
+      <div className="rounded-[2rem] border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-xl">
         {/* QUICK DEMO PRESET LOGINS */}
-        <div className="mb-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 p-4 text-xs">
-          <p className="font-bold text-slate-700 dark:text-slate-300">Quick Test Credentials:</p>
+        <div className="mb-6 rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-4 text-xs border border-slate-200 dark:border-slate-700">
+          <p className="font-extrabold text-slate-800 dark:text-slate-100">Quick Test Credentials:</p>
           <div className="mt-2.5 flex flex-wrap gap-2">
             <button
               type="button"
               onClick={handleFillAdmin}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 dark:bg-slate-100 px-3 py-1.5 font-bold text-white dark:text-slate-900 transition hover:opacity-90"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 dark:bg-slate-100 px-3 py-1.5 font-bold text-white dark:text-slate-900 transition hover:opacity-90 shadow-sm"
             >
               <FaUserShield /> Fill Admin (Seller)
             </button>
             <button
               type="button"
               onClick={handleFillUser}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 font-bold text-slate-800 dark:text-slate-200 transition hover:bg-slate-100 dark:hover:bg-slate-700"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-3 py-1.5 font-bold text-slate-800 dark:text-slate-100 transition hover:bg-slate-100 dark:hover:bg-slate-700 shadow-sm"
             >
               <FaUserCheck /> Fill Customer Demo
             </button>

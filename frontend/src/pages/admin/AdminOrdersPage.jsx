@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaRotateRight, FaMagnifyingGlass } from 'react-icons/fa6';
+import { FaRotateRight, FaMagnifyingGlass, FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import adminService from '../../services/adminService';
 import orderService from '../../services/orderService';
 import AdminSectionShell from '../../components/admin/AdminSectionShell';
@@ -13,7 +13,7 @@ function AdminOrdersPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState('');
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, getValues } = useForm({
     defaultValues: { status: '', paymentStatus: '' },
   });
 
@@ -22,7 +22,15 @@ function AdminOrdersPage() {
     setMessage('');
 
     try {
-      const response = await adminService.getOrders(params);
+      const currentValues = getValues();
+      const queryParams = {
+        page: params.page !== undefined ? params.page : pagination.page,
+        limit: params.limit !== undefined ? params.limit : pagination.limit,
+        status: params.status !== undefined ? params.status : currentValues.status,
+        paymentStatus: params.paymentStatus !== undefined ? params.paymentStatus : currentValues.paymentStatus,
+      };
+
+      const response = await adminService.getOrders(queryParams);
       const responseData = response.data?.data || {};
       setOrders(responseData.orders || []);
       setPagination(responseData.pagination || pagination);
@@ -34,11 +42,20 @@ function AdminOrdersPage() {
   };
 
   useEffect(() => {
-    loadOrders();
+    loadOrders({ page: 1, limit: 10 });
   }, []);
 
   const onSubmit = async (formValues) => {
-    await loadOrders({ status: formValues.status, paymentStatus: formValues.paymentStatus, page: 1 });
+    await loadOrders({ ...formValues, page: 1, limit: pagination.limit });
+  };
+
+  const handlePageChange = async (newPage) => {
+    if (newPage < 1 || newPage > pagination.totalPages) return;
+    await loadOrders({ page: newPage });
+  };
+
+  const handleLimitChange = async (newLimit) => {
+    await loadOrders({ page: 1, limit: Number(newLimit) });
   };
 
   const handleReset = async () => {
@@ -161,11 +178,72 @@ function AdminOrdersPage() {
         {!isLoading && !orders.length ? <p className="text-sm text-slate-500">No orders found.</p> : null}
       </div>
 
-      <div className="mt-4 flex items-center justify-between text-sm text-slate-500">
-        <span>
-          Page {pagination.page} of {pagination.totalPages}
-        </span>
-        <span>Total orders: {pagination.totalOrders}</span>
+      {/* Pagination Controls Bar */}
+      <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 sm:flex-row sm:items-center sm:justify-between shadow-soft">
+        <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-300">
+          <span>
+            Showing <strong className="font-bold text-slate-900 dark:text-white">{pagination.totalOrders === 0 ? 0 : (pagination.page - 1) * pagination.limit + 1}</strong>–<strong className="font-bold text-slate-900 dark:text-white">{Math.min(pagination.page * pagination.limit, pagination.totalOrders)}</strong> of <strong className="font-bold text-slate-900 dark:text-white">{pagination.totalOrders}</strong> orders
+          </span>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Show per page:</span>
+            <select
+              value={pagination.limit}
+              onChange={(e) => handleLimitChange(e.target.value)}
+              className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-1 text-xs font-bold text-slate-800 dark:text-slate-200 outline-none transition focus:border-indigo-500"
+            >
+              <option value="10">10 orders</option>
+              <option value="20">20 orders</option>
+              <option value="50">50 orders</option>
+              <option value="100">100 orders (All)</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Page navigation controls */}
+        <div className="flex items-center gap-1.5 self-end sm:self-auto">
+          <button
+            type="button"
+            disabled={pagination.page <= 1 || isLoading}
+            onClick={() => handlePageChange(pagination.page - 1)}
+            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 transition hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+          >
+            <FaChevronLeft className="text-[10px]" /> Prev
+          </button>
+
+          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+            .filter((p) => p === 1 || p === pagination.totalPages || Math.abs(p - pagination.page) <= 2)
+            .map((p, idx, arr) => {
+              const prevPage = arr[idx - 1];
+              const showEllipsis = prevPage && p - prevPage > 1;
+
+              return (
+                <span key={p} className="flex items-center gap-1">
+                  {showEllipsis ? <span className="px-1 text-xs text-slate-400">...</span> : null}
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(p)}
+                    className={`h-8 w-8 rounded-xl text-xs font-bold transition ${
+                      p === pagination.page
+                        ? 'bg-indigo-600 text-white shadow-soft font-black'
+                        : 'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                </span>
+              );
+            })}
+
+          <button
+            type="button"
+            disabled={pagination.page >= pagination.totalPages || isLoading}
+            onClick={() => handlePageChange(pagination.page + 1)}
+            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 transition hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+          >
+            Next <FaChevronRight className="text-[10px]" />
+          </button>
+        </div>
       </div>
     </AdminSectionShell>
   );

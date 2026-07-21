@@ -8,14 +8,25 @@
   line-height: 1.5;
   font-weight: 400;
   color: #0f172a;
-  background:
+  background-color: #f8fafc;
+  background-image:
     radial-gradient(circle at top left, rgba(249, 115, 22, 0.12), transparent 28%),
     radial-gradient(circle at top right, rgba(14, 165, 233, 0.1), transparent 24%),
-    #f8fafc;
+    radial-gradient(circle at bottom right, rgba(99, 102, 241, 0.08), transparent 30%);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark {
+  color-scheme: dark;
+  color: #f8fafc;
+  background-color: #020617;
+  background-image:
+    radial-gradient(circle at top left, rgba(249, 115, 22, 0.15), transparent 32%),
+    radial-gradient(circle at top right, rgba(99, 102, 241, 0.18), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.12), transparent 28%);
 }
 
 * {
