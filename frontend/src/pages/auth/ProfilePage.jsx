@@ -272,11 +272,11 @@ function ProfilePage() {
 
         {/* Profile Details Bar */}
         <div className="relative px-6 pb-6 pt-0 sm:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 -mt-20">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             {/* Avatar & Main Info */}
             <div className="flex flex-col sm:flex-row items-center sm:items-end gap-5 text-center sm:text-left">
               {/* Avatar Box */}
-              <div className="relative group">
+              <div className="relative group -mt-20 sm:-mt-24">
                 <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-3xl p-1 bg-white dark:bg-slate-900 shadow-xl border-2 border-white dark:border-slate-800">
                   {user?.avatar ? (
                     <img
