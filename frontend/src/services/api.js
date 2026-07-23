@@ -11,7 +11,7 @@ import axios from 'axios';
 // };
 
 const apiClient = axios.create({
-  baseURL: "https://grocery-store-xi-blush.vercel.app/api",
+  baseURL: "https://grocery-store-orpin-gamma.vercel.app/api",
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
