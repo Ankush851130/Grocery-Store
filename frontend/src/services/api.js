@@ -1,8 +1,12 @@
 import axios from 'axios';
 
 const getApiBaseUrl = () => {
-  if (import.meta.env.VITE_API_BASE_URL) {
-    return import.meta.env.VITE_API_BASE_URL;
+  let url = import.meta.env.VITE_API_BASE_URL;
+  if (url) {
+    if (url.startsWith('hhttps://')) {
+      url = url.replace(/^h+ttps:\/\//, 'https://');
+    }
+    return url;
   }
   if (typeof window !== 'undefined' && window.location.hostname) {
     return `http://${window.location.hostname}:5000/api`;
