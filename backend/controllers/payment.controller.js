@@ -52,7 +52,8 @@ const createGatewayOrder = asyncHandler(async (req, res, next) => {
       },
     });
   } catch (error) {
-    return next(new AppError(error.message || 'Razorpay order creation failed. Please check backend Razorpay credentials.', 400));
+    const detailMsg = error?.error?.description || error?.description || error?.message || 'Razorpay order creation failed';
+    return next(new AppError(`Razorpay Error: ${detailMsg}. Please verify RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in backend .env or Vercel Environment Variables.`, 400));
   }
 
   order.paymentResult.provider = 'razorpay';
