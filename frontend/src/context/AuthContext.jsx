@@ -1,5 +1,6 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
 import authService from '../services/authService';
+import { TOKEN_STORAGE_KEYS } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -24,6 +25,8 @@ export function AuthProvider({ children }) {
         setUser(response.data?.data?.user || null);
       } catch (requestError) {
         setUser(null);
+        localStorage.removeItem(TOKEN_STORAGE_KEYS.accessToken);
+        localStorage.removeItem(TOKEN_STORAGE_KEYS.refreshToken);
       } finally {
         setIsLoading(false);
       }
@@ -38,8 +41,16 @@ export function AuthProvider({ children }) {
 
     try {
       const response = await authService.register(payload);
-      const nextUser = response.data?.data?.user || null;
-      setUser(nextUser);
+      const { user: nextUser, accessToken, refreshToken } = response.data?.data || {};
+
+      if (accessToken) {
+        localStorage.setItem(TOKEN_STORAGE_KEYS.accessToken, accessToken);
+      }
+      if (refreshToken) {
+        localStorage.setItem(TOKEN_STORAGE_KEYS.refreshToken, refreshToken);
+      }
+
+      setUser(nextUser || null);
       return response.data;
     } catch (requestError) {
       const message = normalizeApiError(requestError);
@@ -56,8 +67,16 @@ export function AuthProvider({ children }) {
 
     try {
       const response = await authService.login(payload);
-      const nextUser = response.data?.data?.user || null;
-      setUser(nextUser);
+      const { user: nextUser, accessToken, refreshToken } = response.data?.data || {};
+
+      if (accessToken) {
+        localStorage.setItem(TOKEN_STORAGE_KEYS.accessToken, accessToken);
+      }
+      if (refreshToken) {
+        localStorage.setItem(TOKEN_STORAGE_KEYS.refreshToken, refreshToken);
+      }
+
+      setUser(nextUser || null);
       return response.data;
     } catch (requestError) {
       const message = normalizeApiError(requestError);
@@ -77,6 +96,8 @@ export function AuthProvider({ children }) {
     } catch (requestError) {
       setError(normalizeApiError(requestError));
     } finally {
+      localStorage.removeItem(TOKEN_STORAGE_KEYS.accessToken);
+      localStorage.removeItem(TOKEN_STORAGE_KEYS.refreshToken);
       setUser(null);
       setIsLoading(false);
     }
