@@ -43,6 +43,72 @@ const buildOrderItems = (requestedItems, productsById) => {
   });
 };
 
+const executeOrderCreation = async (items, shippingAddress, paymentMethod, couponCode, notes, reqUser, session = null) => {
+  const requestedProductIds = items.map((item) => String(item.productId));
+  const query = Product.find({ _id: { $in: requestedProductIds }, isPublished: true });
+  if (session) query.session(session);
+  const products = await query;
+  const productsById = new Map(products.map((product) => [String(product._id), product]));
+
+  if (products.length !== requestedProductIds.length) {
+    throw new AppError('One or more products are unavailable', 400);
+  }
+
+  const orderItems = buildOrderItems(items, productsById);
+  const subtotal = orderItems.reduce((total, item) => total + item.lineTotal, 0);
+  const appliedCoupon = getCouponByCode(couponCode);
+  const totals = calculateOrderTotals({ subtotal, couponCode });
+
+  if (couponCode && !appliedCoupon) {
+    throw new AppError('Invalid coupon code', 400);
+  }
+
+  if (appliedCoupon && subtotal < appliedCoupon.minSubtotal) {
+    throw new AppError(`Coupon ${appliedCoupon.code} requires a minimum order of ${appliedCoupon.minSubtotal}`, 400);
+  }
+
+  for (const requestedItem of items) {
+    const product = productsById.get(String(requestedItem.productId));
+    const quantity = Number(requestedItem.quantity);
+
+    if (product.stock < quantity) {
+      throw new AppError(`Insufficient stock for ${product.name}`, 400);
+    }
+
+    product.stock -= quantity;
+    await product.save(session ? { session, validateBeforeSave: false } : { validateBeforeSave: false });
+  }
+
+  const orderData = {
+    user: reqUser._id,
+    items: orderItems,
+    shippingAddress,
+    paymentMethod,
+    paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending',
+    paymentResult: {
+      provider: 'razorpay',
+    },
+    pricing: {
+      itemsTotal: subtotal,
+      couponCode: totals.couponCode,
+      couponLabel: totals.appliedCoupon?.label || '',
+      couponDiscount: totals.couponDiscount,
+      shippingFee: totals.shippingFee,
+      taxAmount: totals.taxAmount,
+      grandTotal: totals.grandTotal,
+    },
+    status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
+    tracking: {
+      currentStatus: paymentMethod === 'cod' ? 'confirmed' : 'pending',
+    },
+    notes,
+  };
+
+  const createOptions = session ? { session } : {};
+  const order = await Order.create([orderData], createOptions);
+  return order[0];
+};
+
 const placeOrder = asyncHandler(async (req, res, next) => {
   const validationErrors = validatePlaceOrderPayload(req.body);
 
@@ -51,76 +117,31 @@ const placeOrder = asyncHandler(async (req, res, next) => {
   }
 
   const { items, shippingAddress, paymentMethod, couponCode = '', notes = '' } = req.body;
-  const requestedProductIds = items.map((item) => String(item.productId));
-  const session = await mongoose.startSession();
-
   let createdOrder = null;
 
   try {
-    await session.withTransaction(async () => {
-      const products = await Product.find({ _id: { $in: requestedProductIds }, isPublished: true }).session(session);
-      const productsById = new Map(products.map((product) => [String(product._id), product]));
+    const session = await mongoose.startSession();
+    try {
+      await session.withTransaction(async () => {
+        createdOrder = await executeOrderCreation(items, shippingAddress, paymentMethod, couponCode, notes, req.user, session);
+      });
+    } finally {
+      session.endSession();
+    }
+  } catch (transactionError) {
+    if (transactionError instanceof AppError || transactionError.isOperational) {
+      return next(transactionError);
+    }
 
-      if (products.length !== requestedProductIds.length) {
-        throw new AppError('One or more products are unavailable', 400);
-      }
-
-      const orderItems = buildOrderItems(items, productsById);
-      const subtotal = orderItems.reduce((total, item) => total + item.lineTotal, 0);
-      const appliedCoupon = getCouponByCode(couponCode);
-      const totals = calculateOrderTotals({ subtotal, couponCode });
-
-      if (couponCode && !appliedCoupon) {
-        throw new AppError('Invalid coupon code', 400);
-      }
-
-      if (appliedCoupon && subtotal < appliedCoupon.minSubtotal) {
-        throw new AppError(`Coupon ${appliedCoupon.code} requires a minimum order of ${appliedCoupon.minSubtotal}`, 400);
-      }
-
-      for (const requestedItem of items) {
-        const product = productsById.get(String(requestedItem.productId));
-        const quantity = Number(requestedItem.quantity);
-
-        if (product.stock < quantity) {
-          throw new AppError(`Insufficient stock for ${product.name}`, 400);
-        }
-
-        product.stock -= quantity;
-        await product.save({ session, validateBeforeSave: false });
-      }
-
-      const order = await Order.create([
-        {
-          user: req.user._id,
-          items: orderItems,
-          shippingAddress,
-          paymentMethod,
-          paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending',
-          paymentResult: {
-            provider: 'razorpay',
-          },
-          pricing: {
-            itemsTotal: subtotal,
-            couponCode: totals.couponCode,
-            couponLabel: totals.appliedCoupon?.label || '',
-            couponDiscount: totals.couponDiscount,
-            shippingFee: totals.shippingFee,
-            taxAmount: totals.taxAmount,
-            grandTotal: totals.grandTotal,
-          },
-          status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
-          tracking: {
-            currentStatus: paymentMethod === 'cod' ? 'confirmed' : 'pending',
-          },
-          notes,
-        },
-      ], { session });
-
-      createdOrder = order[0];
-    });
-  } finally {
-    session.endSession();
+    try {
+      createdOrder = await executeOrderCreation(items, shippingAddress, paymentMethod, couponCode, notes, req.user, null);
+    } catch (fallbackError) {
+      return next(
+        fallbackError instanceof AppError || fallbackError.isOperational
+          ? fallbackError
+          : new AppError(fallbackError.message || 'Failed to place order', 400)
+      );
+    }
   }
 
   if (!createdOrder) {

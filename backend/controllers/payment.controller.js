@@ -40,15 +40,20 @@ const createGatewayOrder = asyncHandler(async (req, res, next) => {
     return next(new AppError('This order is already paid', 400));
   }
 
-  const gatewayOrder = await createRazorpayOrder({
-    amount: order.pricing.grandTotal,
-    receipt: order.orderNumber,
-    notes: {
-      orderId: String(order._id),
-      orderNumber: order.orderNumber,
-      userId: String(req.user._id),
-    },
-  });
+  let gatewayOrder;
+  try {
+    gatewayOrder = await createRazorpayOrder({
+      amount: order.pricing.grandTotal,
+      receipt: order.orderNumber,
+      notes: {
+        orderId: String(order._id),
+        orderNumber: order.orderNumber,
+        userId: String(req.user._id),
+      },
+    });
+  } catch (error) {
+    return next(new AppError(error.message || 'Razorpay order creation failed. Please check backend Razorpay credentials.', 400));
+  }
 
   order.paymentResult.provider = 'razorpay';
   order.paymentResult.razorpayOrderId = gatewayOrder.id;
@@ -103,11 +108,16 @@ const verifyPayment = asyncHandler(async (req, res, next) => {
     return next(new AppError('This order was not created for Razorpay payment', 400));
   }
 
-  const isSignatureValid = verifyRazorpaySignature({
-    razorpayOrderId,
-    razorpayPaymentId,
-    razorpaySignature,
-  });
+  let isSignatureValid = false;
+  try {
+    isSignatureValid = verifyRazorpaySignature({
+      razorpayOrderId,
+      razorpayPaymentId,
+      razorpaySignature,
+    });
+  } catch (error) {
+    return next(new AppError(error.message || 'Razorpay payment verification error', 400));
+  }
 
   if (!isSignatureValid) {
     return next(new AppError('Payment verification failed', 400));
