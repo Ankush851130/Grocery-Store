@@ -261,352 +261,352 @@ function AdminProductsPage() {
       {/* Create Product Modal */}
       {isCreateOpen
         ? createPortal(
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
-              <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-2xl text-slate-900 dark:text-white">
-                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-950 dark:text-white">Add New Product</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Fill in the product details to add it to the catalog.</p>
-                  </div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+            <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-2xl text-slate-900 dark:text-white">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+                <div>
+                  <h3 className="text-xl font-bold text-slate-950 dark:text-white">Add New Product</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Fill in the product details to add it to the catalog.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsCreateOpen(false)}
+                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200"
+                >
+                  <FaXmark className="text-lg" />
+                </button>
+              </div>
+
+              {createError ? (
+                <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 dark:bg-red-950/40 p-4 text-sm font-semibold text-red-600 dark:text-red-400">
+                  {createError}
+                </div>
+              ) : null}
+
+              <form onSubmit={handleSubmitCreate(handleCreateProduct)} className="mt-4 space-y-4">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Product Name *</span>
+                    <input
+                      type="text"
+                      placeholder="e.g. SonicBass Wireless Earbuds"
+                      className={inputStyle}
+                      {...registerCreate('name', { required: 'Name is required' })}
+                    />
+                    {createErrors.name ? <p className="text-xs text-red-500">{createErrors.name.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Brand *</span>
+                    <input
+                      type="text"
+                      placeholder="e.g. SonicAudio"
+                      className={inputStyle}
+                      {...registerCreate('brand', { required: 'Brand is required' })}
+                    />
+                    {createErrors.brand ? <p className="text-xs text-red-500">{createErrors.brand.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Category *</span>
+                    <select className={inputStyle} {...registerCreate('category', { required: 'Category is required' })}>
+                      <option value="">Select Category</option>
+                      <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+                      <option value="Mobiles & Accessories">Mobiles & Accessories</option>
+                      <option value="Cold Drinks & Juices">Cold Drinks & Juices</option>
+                      <option value="Snacks & Munchies">Snacks & Munchies</option>
+                      <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                      <option value="Dairy & Eggs">Dairy & Eggs</option>
+                      <option value="Personal Care & Beauty">Personal Care & Beauty</option>
+                      <option value="Home & Kitchen">Home & Kitchen</option>
+                      <option value="Bakery">Bakery & Quick Meals</option>
+                      <option value="Pantry & Oil">Pantry & Oils</option>
+                    </select>
+                    {createErrors.category ? <p className="text-xs text-red-500">{createErrors.category.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Unit</span>
+                    <input
+                      type="text"
+                      placeholder="e.g. 1 Unit, Pack of 6"
+                      className={inputStyle}
+                      {...registerCreate('unit')}
+                    />
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Regular Price (₹) *</span>
+                    <input
+                      type="number"
+                      step="1"
+                      placeholder="e.g. 3499"
+                      className={inputStyle}
+                      {...registerCreate('price', { required: 'Price is required' })}
+                    />
+                    {createErrors.price ? <p className="text-xs text-red-500">{createErrors.price.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Discount Price (₹)</span>
+                    <input
+                      type="number"
+                      step="1"
+                      placeholder="e.g. 2499 (Optional)"
+                      className={inputStyle}
+                      {...registerCreate('discountPrice')}
+                    />
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Stock Quantity *</span>
+                    <input
+                      type="number"
+                      placeholder="e.g. 50"
+                      className={inputStyle}
+                      {...registerCreate('stock', { required: 'Stock is required' })}
+                    />
+                    {createErrors.stock ? <p className="text-xs text-red-500">{createErrors.stock.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Image URL</span>
+                    <input
+                      type="url"
+                      placeholder="https://images.unsplash.com/..."
+                      className={inputStyle}
+                      {...registerCreate('imageUrl')}
+                    />
+                  </label>
+                </div>
+
+                <label className="block space-y-1">
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Description *</span>
+                  <textarea
+                    rows="3"
+                    placeholder="Detailed description of the product (minimum 20 characters)..."
+                    className={inputStyle}
+                    {...registerCreate('description', {
+                      required: 'Description is required',
+                      minLength: { value: 20, message: 'Description must be at least 20 characters' },
+                    })}
+                  />
+                  {createErrors.description ? <p className="text-xs text-red-500">{createErrors.description.message}</p> : null}
+                </label>
+
+                <div className="flex items-center gap-6 pt-2">
+                  <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
+                      {...registerCreate('isPublished')}
+                    />
+                    Publish Item Immediately
+                  </label>
+
+                  <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
+                      {...registerCreate('isFeatured')}
+                    />
+                    Feature on Homepage
+                  </label>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                   <button
                     type="button"
                     onClick={() => setIsCreateOpen(false)}
-                    className="rounded-full p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200"
+                    className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
                   >
-                    <FaXmark className="text-lg" />
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isCreating}
+                    className="rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-indigo-700 disabled:opacity-70"
+                  >
+                    {isCreating ? 'Saving...' : 'Save & Publish Product'}
                   </button>
                 </div>
-
-                {createError ? (
-                  <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 dark:bg-red-950/40 p-4 text-sm font-semibold text-red-600 dark:text-red-400">
-                    {createError}
-                  </div>
-                ) : null}
-
-                <form onSubmit={handleSubmitCreate(handleCreateProduct)} className="mt-4 space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Product Name *</span>
-                      <input
-                        type="text"
-                        placeholder="e.g. SonicBass Wireless Earbuds"
-                        className={inputStyle}
-                        {...registerCreate('name', { required: 'Name is required' })}
-                      />
-                      {createErrors.name ? <p className="text-xs text-red-500">{createErrors.name.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Brand *</span>
-                      <input
-                        type="text"
-                        placeholder="e.g. SonicAudio"
-                        className={inputStyle}
-                        {...registerCreate('brand', { required: 'Brand is required' })}
-                      />
-                      {createErrors.brand ? <p className="text-xs text-red-500">{createErrors.brand.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Category *</span>
-                      <select className={inputStyle} {...registerCreate('category', { required: 'Category is required' })}>
-                        <option value="">Select Category</option>
-                        <option value="Electronics & Gadgets">Electronics & Gadgets</option>
-                        <option value="Mobiles & Accessories">Mobiles & Accessories</option>
-                        <option value="Cold Drinks & Juices">Cold Drinks & Juices</option>
-                        <option value="Snacks & Munchies">Snacks & Munchies</option>
-                        <option value="Fruits & Vegetables">Fruits & Vegetables</option>
-                        <option value="Dairy & Eggs">Dairy & Eggs</option>
-                        <option value="Personal Care & Beauty">Personal Care & Beauty</option>
-                        <option value="Home & Kitchen">Home & Kitchen</option>
-                        <option value="Bakery">Bakery & Quick Meals</option>
-                        <option value="Pantry & Oil">Pantry & Oils</option>
-                      </select>
-                      {createErrors.category ? <p className="text-xs text-red-500">{createErrors.category.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Unit</span>
-                      <input
-                        type="text"
-                        placeholder="e.g. 1 Unit, Pack of 6"
-                        className={inputStyle}
-                        {...registerCreate('unit')}
-                      />
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Regular Price (₹) *</span>
-                      <input
-                        type="number"
-                        step="1"
-                        placeholder="e.g. 3499"
-                        className={inputStyle}
-                        {...registerCreate('price', { required: 'Price is required' })}
-                      />
-                      {createErrors.price ? <p className="text-xs text-red-500">{createErrors.price.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Discount Price (₹)</span>
-                      <input
-                        type="number"
-                        step="1"
-                        placeholder="e.g. 2499 (Optional)"
-                        className={inputStyle}
-                        {...registerCreate('discountPrice')}
-                      />
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Stock Quantity *</span>
-                      <input
-                        type="number"
-                        placeholder="e.g. 50"
-                        className={inputStyle}
-                        {...registerCreate('stock', { required: 'Stock is required' })}
-                      />
-                      {createErrors.stock ? <p className="text-xs text-red-500">{createErrors.stock.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Image URL</span>
-                      <input
-                        type="url"
-                        placeholder="https://images.unsplash.com/..."
-                        className={inputStyle}
-                        {...registerCreate('imageUrl')}
-                      />
-                    </label>
-                  </div>
-
-                  <label className="block space-y-1">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Description *</span>
-                    <textarea
-                      rows="3"
-                      placeholder="Detailed description of the product (minimum 20 characters)..."
-                      className={inputStyle}
-                      {...registerCreate('description', {
-                        required: 'Description is required',
-                        minLength: { value: 20, message: 'Description must be at least 20 characters' },
-                      })}
-                    />
-                    {createErrors.description ? <p className="text-xs text-red-500">{createErrors.description.message}</p> : null}
-                  </label>
-
-                  <div className="flex items-center gap-6 pt-2">
-                    <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
-                        {...registerCreate('isPublished')}
-                      />
-                      Publish Item Immediately
-                    </label>
-
-                    <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
-                        {...registerCreate('isFeatured')}
-                      />
-                      Feature on Homepage
-                    </label>
-                  </div>
-
-                  <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-                    <button
-                      type="button"
-                      onClick={() => setIsCreateOpen(false)}
-                      className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isCreating}
-                      className="rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-indigo-700 disabled:opacity-70"
-                    >
-                      {isCreating ? 'Saving...' : 'Save & Publish Product'}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>,
-            document.body,
-          )
+              </form>
+            </div>
+          </div>,
+          document.body,
+        )
         : null}
 
       {/* Edit Product Modal */}
       {editingProduct
         ? createPortal(
-            <div key={editingProduct._id} className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
-              <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-2xl text-slate-900 dark:text-white">
-                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-950 dark:text-white">Edit Product: {editingProduct.name}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Update pricing, stock levels, or product details.</p>
-                  </div>
+          <div key={editingProduct._id} className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+            <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-2xl text-slate-900 dark:text-white">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+                <div>
+                  <h3 className="text-xl font-bold text-slate-950 dark:text-white">Edit Product: {editingProduct.name}</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Update pricing, stock levels, or product details.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setEditingProduct(null)}
+                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200"
+                >
+                  <FaXmark className="text-lg" />
+                </button>
+              </div>
+
+              {editError ? (
+                <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 dark:bg-red-950/40 p-4 text-sm font-semibold text-red-600 dark:text-red-400">
+                  {editError}
+                </div>
+              ) : null}
+
+              <form onSubmit={handleSubmitEdit(handleUpdateProduct)} className="mt-4 space-y-4">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Product Name *</span>
+                    <input
+                      type="text"
+                      className={inputStyle}
+                      {...registerEdit('name', { required: 'Name is required' })}
+                    />
+                    {editErrors.name ? <p className="text-xs text-red-500">{editErrors.name.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Brand *</span>
+                    <input
+                      type="text"
+                      className={inputStyle}
+                      {...registerEdit('brand', { required: 'Brand is required' })}
+                    />
+                    {editErrors.brand ? <p className="text-xs text-red-500">{editErrors.brand.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Category *</span>
+                    <select className={inputStyle} {...registerEdit('category', { required: 'Category is required' })}>
+                      <option value="">Select Category</option>
+                      <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+                      <option value="Mobiles & Accessories">Mobiles & Accessories</option>
+                      <option value="Cold Drinks & Juices">Cold Drinks & Juices</option>
+                      <option value="Snacks & Munchies">Snacks & Munchies</option>
+                      <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                      <option value="Dairy & Eggs">Dairy & Eggs</option>
+                      <option value="Personal Care & Beauty">Personal Care & Beauty</option>
+                      <option value="Home & Kitchen">Home & Kitchen</option>
+                      <option value="Bakery">Bakery & Quick Meals</option>
+                      <option value="Pantry & Oil">Pantry & Oils</option>
+                    </select>
+                    {editErrors.category ? <p className="text-xs text-red-500">{editErrors.category.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Unit</span>
+                    <input
+                      type="text"
+                      className={inputStyle}
+                      {...registerEdit('unit')}
+                    />
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Regular Price (₹) *</span>
+                    <input
+                      type="number"
+                      step="1"
+                      className={inputStyle}
+                      {...registerEdit('price', { required: 'Price is required' })}
+                    />
+                    {editErrors.price ? <p className="text-xs text-red-500">{editErrors.price.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Discount Price (₹)</span>
+                    <input
+                      type="number"
+                      step="1"
+                      placeholder="Leave empty for no discount"
+                      className={inputStyle}
+                      {...registerEdit('discountPrice')}
+                    />
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Stock Quantity *</span>
+                    <input
+                      type="number"
+                      className={inputStyle}
+                      {...registerEdit('stock', { required: 'Stock is required' })}
+                    />
+                    {editErrors.stock ? <p className="text-xs text-red-500">{editErrors.stock.message}</p> : null}
+                  </label>
+
+                  <label className="block space-y-1">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Image URL</span>
+                    <input
+                      type="url"
+                      className={inputStyle}
+                      {...registerEdit('imageUrl')}
+                    />
+                  </label>
+                </div>
+
+                <label className="block space-y-1">
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Description *</span>
+                  <textarea
+                    rows="3"
+                    className={inputStyle}
+                    {...registerEdit('description', {
+                      required: 'Description is required',
+                      minLength: { value: 20, message: 'Description must be at least 20 characters' },
+                    })}
+                  />
+                  {editErrors.description ? <p className="text-xs text-red-500">{editErrors.description.message}</p> : null}
+                </label>
+
+                <div className="flex items-center gap-6 pt-2">
+                  <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
+                      {...registerEdit('isPublished')}
+                    />
+                    Published
+                  </label>
+
+                  <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
+                      {...registerEdit('isFeatured')}
+                    />
+                    Featured on Homepage
+                  </label>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                   <button
                     type="button"
                     onClick={() => setEditingProduct(null)}
-                    className="rounded-full p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200"
+                    className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
                   >
-                    <FaXmark className="text-lg" />
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isEditing}
+                    className="rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-indigo-700 disabled:opacity-70"
+                  >
+                    {isEditing ? 'Updating...' : 'Update Product Details'}
                   </button>
                 </div>
-
-                {editError ? (
-                  <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 dark:bg-red-950/40 p-4 text-sm font-semibold text-red-600 dark:text-red-400">
-                    {editError}
-                  </div>
-                ) : null}
-
-                <form onSubmit={handleSubmitEdit(handleUpdateProduct)} className="mt-4 space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Product Name *</span>
-                      <input
-                        type="text"
-                        className={inputStyle}
-                        {...registerEdit('name', { required: 'Name is required' })}
-                      />
-                      {editErrors.name ? <p className="text-xs text-red-500">{editErrors.name.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Brand *</span>
-                      <input
-                        type="text"
-                        className={inputStyle}
-                        {...registerEdit('brand', { required: 'Brand is required' })}
-                      />
-                      {editErrors.brand ? <p className="text-xs text-red-500">{editErrors.brand.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Category *</span>
-                      <select className={inputStyle} {...registerEdit('category', { required: 'Category is required' })}>
-                        <option value="">Select Category</option>
-                        <option value="Electronics & Gadgets">Electronics & Gadgets</option>
-                        <option value="Mobiles & Accessories">Mobiles & Accessories</option>
-                        <option value="Cold Drinks & Juices">Cold Drinks & Juices</option>
-                        <option value="Snacks & Munchies">Snacks & Munchies</option>
-                        <option value="Fruits & Vegetables">Fruits & Vegetables</option>
-                        <option value="Dairy & Eggs">Dairy & Eggs</option>
-                        <option value="Personal Care & Beauty">Personal Care & Beauty</option>
-                        <option value="Home & Kitchen">Home & Kitchen</option>
-                        <option value="Bakery">Bakery & Quick Meals</option>
-                        <option value="Pantry & Oil">Pantry & Oils</option>
-                      </select>
-                      {editErrors.category ? <p className="text-xs text-red-500">{editErrors.category.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Unit</span>
-                      <input
-                        type="text"
-                        className={inputStyle}
-                        {...registerEdit('unit')}
-                      />
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Regular Price (₹) *</span>
-                      <input
-                        type="number"
-                        step="1"
-                        className={inputStyle}
-                        {...registerEdit('price', { required: 'Price is required' })}
-                      />
-                      {editErrors.price ? <p className="text-xs text-red-500">{editErrors.price.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Discount Price (₹)</span>
-                      <input
-                        type="number"
-                        step="1"
-                        placeholder="Leave empty for no discount"
-                        className={inputStyle}
-                        {...registerEdit('discountPrice')}
-                      />
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Stock Quantity *</span>
-                      <input
-                        type="number"
-                        className={inputStyle}
-                        {...registerEdit('stock', { required: 'Stock is required' })}
-                      />
-                      {editErrors.stock ? <p className="text-xs text-red-500">{editErrors.stock.message}</p> : null}
-                    </label>
-
-                    <label className="block space-y-1">
-                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Image URL</span>
-                      <input
-                        type="url"
-                        className={inputStyle}
-                        {...registerEdit('imageUrl')}
-                      />
-                    </label>
-                  </div>
-
-                  <label className="block space-y-1">
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Description *</span>
-                    <textarea
-                      rows="3"
-                      className={inputStyle}
-                      {...registerEdit('description', {
-                        required: 'Description is required',
-                        minLength: { value: 20, message: 'Description must be at least 20 characters' },
-                      })}
-                    />
-                    {editErrors.description ? <p className="text-xs text-red-500">{editErrors.description.message}</p> : null}
-                  </label>
-
-                  <div className="flex items-center gap-6 pt-2">
-                    <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
-                        {...registerEdit('isPublished')}
-                      />
-                      Published
-                    </label>
-
-                    <label className="inline-flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500"
-                        {...registerEdit('isFeatured')}
-                      />
-                      Featured on Homepage
-                    </label>
-                  </div>
-
-                  <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-                    <button
-                      type="button"
-                      onClick={() => setEditingProduct(null)}
-                      className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isEditing}
-                      className="rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-indigo-700 disabled:opacity-70"
-                    >
-                      {isEditing ? 'Updating...' : 'Update Product Details'}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>,
-            document.body,
-          )
+              </form>
+            </div>
+          </div>,
+          document.body,
+        )
         : null}
 
       {/* Filter Form */}
@@ -777,11 +777,10 @@ function AdminProductsPage() {
                   <button
                     type="button"
                     onClick={() => handlePageChange(p)}
-                    className={`h-8 w-8 rounded-xl text-xs font-bold transition ${
-                      p === pagination.page
+                    className={`h-8 w-8 rounded-xl text-xs font-bold transition ${p === pagination.page
                         ? 'bg-indigo-600 text-white shadow-soft font-black'
                         : 'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
-                    }`}
+                      }`}
                   >
                     {p}
                   </button>

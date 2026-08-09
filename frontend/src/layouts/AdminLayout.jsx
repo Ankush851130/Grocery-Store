@@ -2,10 +2,9 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { FaBoxesStacked, FaChartLine, FaHouse, FaUsers, FaBagShopping } from 'react-icons/fa6';
 
 const navLinkClass = ({ isActive }) =>
-  `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition ${
-    isActive
-      ? 'bg-brand-600 text-white shadow-soft'
-      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'
+  `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition ${isActive
+    ? 'bg-brand-600 text-white shadow-soft'
+    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'
   }`;
 
 function AdminLayout() {

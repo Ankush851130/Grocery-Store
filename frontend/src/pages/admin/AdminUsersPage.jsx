@@ -213,11 +213,10 @@ function AdminUsersPage() {
                   <button
                     type="button"
                     onClick={() => handlePageChange(p)}
-                    className={`h-8 w-8 rounded-xl text-xs font-bold transition ${
-                      p === pagination.page
+                    className={`h-8 w-8 rounded-xl text-xs font-bold transition ${p === pagination.page
                         ? 'bg-indigo-600 text-white shadow-soft font-black'
                         : 'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
-                    }`}
+                      }`}
                   >
                     {p}
                   </button>
